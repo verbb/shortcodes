@@ -1,0 +1,34 @@
+{
+  "name": "samhernandez/craft-shortcodes",
+  "description": "WordPress style shortcodes twig filter and template mapping",
+  "version": "1.0",
+  "type": "craft-plugin",
+  "keywords": ["WordPress", "bbPress", "shortcodes"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sam Hernandez",
+      "homepage": "https://github.com/samhernandez"
+    }
+  ],
+  "support": {
+    "email": "sam@silvertoncreative.com",
+    "issues": "https://github.com/samhernandez/craftcms-shortcodes/issues",
+    "source": "https://github.com/samhernandez/craftcms-shortcodes",
+    "docs": "https://github.com/samhernandez/craftcms-shortcodes"
+  },
+  "require": {
+    "craftcms/cms": "^3.0.0",
+    "thunderer/shortcode": "^0.6.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "samhernandez\\shortcodes\\": "src/"
+    }
+  },
+  "extra": {
+    "handle": "shortcodes",
+    "name": "Shortcodes",
+    "class": "samhernandez\\shortcodes\\Shortcodes"
+  }
+}
