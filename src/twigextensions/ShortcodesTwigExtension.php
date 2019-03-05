@@ -28,10 +28,10 @@ class ShortcodesTwigExtension extends \Twig_Extension
 
     /**
      * Handles the `shortcodes` filter.
-     * @param Twig_Markup $markup
+     * @param Twig_Markup|string $markup
      * @return Twig_Markup
      */
-    public function shortcodesFilter(Twig_Markup $markup)
+    public function shortcodesFilter($markup)
     {
         $processed = Shortcodes::$shortcode->process((string) $markup);
 
