@@ -1,7 +1,7 @@
 {
   "name": "samhernandez/craft-shortcodes",
   "description": "WordPress style shortcodes twig filter and template mapping",
-  "version": "1.0",
+  "version": "1.0.2",
   "type": "craft-plugin",
   "keywords": ["WordPress", "bbPress", "shortcodes"],
   "license": "MIT",
