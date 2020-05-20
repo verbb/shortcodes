@@ -14,6 +14,7 @@ This plugin is a simple wrapper for the [`thunderer/shortcode`](https://github.c
 
 ```bash
 composer require samhernandez/craft-shortcodes
+./craft install/plugin shortcodes
 ```
 
 ## Configuration
