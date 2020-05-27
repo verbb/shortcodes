@@ -13,9 +13,9 @@
   ],
   "support": {
     "email": "sam@silvertoncreative.com",
-    "issues": "https://github.com/samhernandez/craftcms-shortcodes/issues",
-    "source": "https://github.com/samhernandez/craftcms-shortcodes",
-    "docs": "https://github.com/samhernandez/craftcms-shortcodes"
+    "issues": "https://github.com/samhernandez/craft-shortcodes/issues",
+    "source": "https://github.com/samhernandez/craft-shortcodes",
+    "docs": "https://github.com/samhernandez/craft-shortcodes"
   },
   "require": {
     "craftcms/cms": "^3.0.0",
