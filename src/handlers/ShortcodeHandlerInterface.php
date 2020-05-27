@@ -12,6 +12,7 @@ interface ShortcodeHandlerInterface
 {
     /**
      * @param ShortcodeInterface $shortcode
+     * @param object|null $context
      * @return string
      */
     public function __invoke(ShortcodeInterface $shortcode);

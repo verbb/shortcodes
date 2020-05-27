@@ -31,9 +31,19 @@ class ShortcodesTwigExtension extends \Twig_Extension
      * @param Twig_Markup|string $markup
      * @return Twig_Markup
      */
-    public function shortcodesFilter($markup)
+    public function shortcodesFilter($markup, $options = null)
     {
+        if (is_array($options) && array_key_exists('context', $options)) {
+            if (is_array($options['context'])) {
+                Shortcodes::getInstance()->context->set($options['context']);
+            } else {
+                throw new \Exception("Shortcode context must be a key/value object in Twig");
+            }
+        }
+
         $processed = Shortcodes::$shortcode->process((string) $markup);
+
+        Shortcodes::getInstance()->context->clear();
 
         return TemplateHelper::raw($processed);
     }

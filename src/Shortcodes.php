@@ -38,6 +38,10 @@ class Shortcodes extends Plugin
     {
         parent::init();
 
+        $this->setComponents([
+            'context' => \samhernandez\shortcodes\services\ContextService::class,
+        ]);
+
         $this->initShortcodeFacade();
         $this->initTwig();
         $this->initHandlers();

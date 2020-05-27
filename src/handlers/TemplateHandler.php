@@ -10,6 +10,7 @@ use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 use Twig_Error_Loader;
 use yii\base\BaseObject;
 use yii\base\Event;
+use samhernandez\shortcodes\Shortcodes;
 
 class TemplateHandler extends BaseObject implements ShortcodeHandlerInterface
 {
@@ -50,8 +51,18 @@ class TemplateHandler extends BaseObject implements ShortcodeHandlerInterface
             $context[$element->refHandle()] = $element;
         }
 
+        // The plugin stashes any context provided by the Twig filter
+        // so we'll check for a stash and add it
+        $shortcodeContext = Shortcodes::getInstance()->context->get();
+        if (is_array($shortcodeContext)) {
+            foreach($shortcodeContext as $key => $value) {
+                $context[$key] = $value;
+            }
+        }
+
         $this->context = $context;
 
+        // Give modules and other plugins a chance to modify
         Event::trigger($this, static::EVENT_BEFORE_RENDER);
     }
 
