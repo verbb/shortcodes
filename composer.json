@@ -19,7 +19,7 @@
   },
   "require": {
     "craftcms/cms": "^3.0.0",
-    "thunderer/shortcode": "^0.6.5"
+    "thunderer/shortcode": "^0.7.4"
   },
   "autoload": {
     "psr-4": {
