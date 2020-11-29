@@ -48,6 +48,19 @@ There is a short alias, `sc`, if you prefer it.
 <div>{{ entry.legacyContent | sc }}</div>
 ```
 
+You can include context for the shortcode handlers.
+
+```twig
+{{ entry.textField | shortcodes({
+    context: {
+        foo: 'foo',
+        ...
+    }
+}) }}
+```
+
+If there are multiple shortcodes to parse within the given text, each of them will have access to the provided context.
+
 ## Template Handlers
 
 This section is probably all you need to skim unless you’re looking to handle shortcodes with PHP rather than Twig. If so, jump to the next section.
@@ -56,7 +69,39 @@ As mentioned, this plugin is a simple wrapper for the [thunderer/Shortcode](http
 
 (If you’re curious, it’s an instance of [ParsedShortcode](https://github.com/thunderer/Shortcode/blob/master/src/Shortcode/ParsedShortcode.php), but the most useful methods are on the [AbstractShortcode](https://github.com/thunderer/Shortcode/blob/master/src/Shortcode/AbstractShortcode.php) class.)
 
+### Context Variables
+
+Any context variables you pass to the Twig filter are available in the template. If the template with the shortcode looks like this:
+
+```twig
+{% for block in entry.contentModules.all() %}
+    {{ block.text | shortcodes({
+        context: {
+            block: block,
+            field: block.text
+        }
+    }) }}
+{% endfor %}
+```
+
+then your handler template can use those variables like so:
+
+```twig
+{% if block.handle === 'foo' %}
+  <p class="foo-text">{{ field }}</p>
+{% endif %}
+
+```
+
 The matched element for the current route (e.g. `entry`, `category`, etc.) is also available in the shortcode template just in case it’s helpful.
+
+```twig
+{{ entry.otherField }}
+- or -
+{{ category.otherField }}
+- or -
+{{ asset.otherField }}
+```
 
 ### Useful `shortcode` Methods
 
@@ -272,7 +317,29 @@ return [
 ];
 ```
 
-That's it!
+### Context Variables
+
+You can access context variables as an array in your class like so:
+
+```php
+<?php
+
+namespace modules;
+
+use samhernandez\shortcodes\Shortcodes;
+use samhernandez\shortcodes\handlers\ShortcodeHandlerInterface;
+use Thunder\Shortcode\Shortcode\ShortcodeInterface;
+
+class MyHandler implements ShortcodeHandlerInterface
+{
+    public function __invoke(ShortcodeInterface $shortcode)
+    {
+        ...
+        $shortcodeContext = Shortcodes::getInstance()->context->get();
+        ...
+    }
+}
+```
 
 ## Advanced Config
 
