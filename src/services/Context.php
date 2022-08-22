@@ -13,7 +13,7 @@ class Context extends Component
      *
      * @var array
      */
-    protected $context = [];
+    protected array $context = [];
 
 
     // Public Methods

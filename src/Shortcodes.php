@@ -32,9 +32,9 @@ class Shortcodes extends Plugin
     // Properties
     // =========================================================================
 
-    public $schemaVersion = '1.0.0';
+    public string $schemaVersion = '1.0.0';
 
-    public static $shortcode;
+    public static ShortcodeFacade $shortcode;
 
 
     // Traits

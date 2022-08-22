@@ -10,7 +10,7 @@ class Settings extends Model
     // Properties
     // =========================================================================
 
-    public $map = [];
-    public $parser = Shortcodes::PARSER_WORDPRESS;
-    public $syntax = null;
+    public array $map = [];
+    public string $parser = Shortcodes::PARSER_WORDPRESS;
+    public mixed $syntax = null;
 }

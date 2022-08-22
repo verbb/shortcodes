@@ -1,6 +1,7 @@
 <?php
 namespace verbb\shortcodes\base;
 
+use verbb\shortcodes\Shortcodes;
 use verbb\shortcodes\services\Context;
 
 use Craft;
@@ -14,7 +15,7 @@ trait PluginTrait
     // Static Properties
     // =========================================================================
 
-    public static $plugin;
+    public static Shortcodes $plugin;
 
 
     // Public Methods

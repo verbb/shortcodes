@@ -25,9 +25,9 @@ class TemplateHandler extends BaseObject implements ShortcodeHandlerInterface
     // Properties
     // =========================================================================
 
-    public $template = '';
-    public $code = '';
-    public $context = [];
+    public string $template = '';
+    public string $code = '';
+    public array $context = [];
 
 
     // Public Methods

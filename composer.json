@@ -2,7 +2,7 @@
     "name": "verbb/shortcodes",
     "description": "Automatically login based on whitelisted IP, basic auth username or URL keys",
     "type": "craft-plugin",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "keywords": [
         "craft",
         "cms",
@@ -29,8 +29,9 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.7.0",
-        "verbb/base": "^1.0.2",
+        "php": "^8.0.2",
+        "craftcms/cms": "^4.0.0",
+        "verbb/base": "^2.0.0",
         "thunderer/shortcode": "^0.7.4"
     },
     "autoload": {
@@ -41,7 +42,7 @@
     "extra": {
         "name": "Shortcodes",
         "handle": "shortcodes",
-        "changelogUrl": "https://raw.githubusercontent.com/verbb/shortcodes/craft-3/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/verbb/shortcodes/craft-4/CHANGELOG.md",
         "class": "verbb\\shortcodes\\Shortcodes"
     }
 }
