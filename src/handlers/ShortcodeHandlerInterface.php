@@ -1,12 +1,12 @@
 <?php
-namespace samhernandez\shortcodes\handlers;
+namespace verbb\shortcodes\handlers;
 
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
 /**
  * A shortcode handler class must be invokable.
  *
- * @package samhernandez\shortcodes\handlers
+ * @package verbb\shortcodes\handlers
  */
 interface ShortcodeHandlerInterface
 {

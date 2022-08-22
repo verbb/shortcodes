@@ -1,20 +1,22 @@
 <?php
-namespace samhernandez\shortcodes\services;
+namespace verbb\shortcodes\services;
 
 use craft\base\Component;
 
-/**
- * Provides a stash for template handler context.
- *
- * @package samhernandez\shortcodes\services
- */
-class ContextService extends Component
+class Context extends Component
 {
+    // Properties
+    // =========================================================================
+
     /**
      * Key/value array for Twig template context
      * @var array
      */
     protected $context = [];
+
+
+    // Public Methods
+    // =========================================================================
 
     /**
      * @throws \Exception
@@ -32,11 +34,13 @@ class ContextService extends Component
     /**
      * @return array
      */
-    public function get() {
+    public function get()
+    {
         return $this->context;
     }
 
-    public function clear() {
+    public function clear()
+    {
         $this->context = [];
     }
 }

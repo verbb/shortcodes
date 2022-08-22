@@ -1,11 +1,15 @@
 <?php
+namespace verbb\shortcodes\models;
 
-namespace samhernandez\shortcodes\models;
+use verbb\shortcodes\Shortcodes;
 
 use craft\base\Model;
-use samhernandez\shortcodes\Shortcodes;
 
-class Settings extends Model {
+class Settings extends Model
+{
+    // Properties
+    // =========================================================================
+
     public $map = [];
     public $parser = Shortcodes::PARSER_WORDPRESS;
     public $syntax = null;

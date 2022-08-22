@@ -1,29 +1,32 @@
-# Craft CMS Shortcodes
-
-**For Craft CMS 3**
-
-The Craft 2 version is still available [here](https://github.com/samhernandez/craftcms-shortcodes).
-
-## Description
-
+# Shortcodes plugin for Craft CMS
 Easily map [WordPress style shortcodes](https://support.wordpress.com/shortcodes/) to custom templates or PHP class handlers. Use the provided Twig filter, `shortcodes` (or `sc`), to parse shortcodes in field content.
 
 This plugin is a simple wrapper for the [`thunderer/shortcode`](https://github.com/thunderer/Shortcode) PHP package.
 
 ## Installation
+You can install Shortcodes via the plugin store, or through Composer.
 
-```bash
-composer require samhernandez/craft-shortcodes
-./craft install/plugin shortcodes
-```
+### Craft Plugin Store
+To install **Shortcodes**, navigate to the _Plugin Store_ section of your Craft control panel, search for `Shortcodes`, and click the _Try_ button.
 
-## Configuration
+### Composer
+You can also add the package to your project using Composer.
 
-Add a file to the `/config` directory named `shortcodes.php`. That file should return an array that maps shortcode tags to templates that you create to handle each shortcode.
+1. Open your terminal and go to your Craft project:
 
-Config file: `/config/shortcodes.php`
+        cd /path/to/project
+
+2. Then tell Composer to load the plugin:
+    
+        composer require verbb/shortcodes
+
+3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Shortcodes.
+
+## Configuring Shortcodes
+The plugin is configured in the `config/` directory in a file you create called `shortcodes.php`. What follows is an example of what it might contain.
 
 ```php
+<?php
 return [
     'map' => [
         'video' => '_shortcodes/video.twig',
@@ -35,7 +38,6 @@ return [
 Now, any `[video]` shortcodes will now load your custom handler template.
 
 ## Twig Filter
-
 Add the twig filter, `shortcodes`, to any field that might contain shortcodes.
 
 ```twig
@@ -62,7 +64,6 @@ You can include context for the shortcode handlers.
 If there are multiple shortcodes to parse within the given text, each of them will have access to the provided context.
 
 ## Template Handlers
-
 This section is probably all you need to skim unless you’re looking to handle shortcodes with PHP rather than Twig. If so, jump to the next section.
 
 As mentioned, this plugin is a simple wrapper for the [thunderer/Shortcode](https://github.com/thunderer/Shortcode) PHP package. With that in mind, a Twig variable, `shortcode` is available in your mapped shortcode templates.
@@ -70,7 +71,6 @@ As mentioned, this plugin is a simple wrapper for the [thunderer/Shortcode](http
 (If you’re curious, it’s an instance of [ParsedShortcode](https://github.com/thunderer/Shortcode/blob/master/src/Shortcode/ParsedShortcode.php), but the most useful methods are on the [AbstractShortcode](https://github.com/thunderer/Shortcode/blob/master/src/Shortcode/AbstractShortcode.php) class.)
 
 ### Context Variables
-
 Any context variables you pass to the Twig filter are available in the template. If the template with the shortcode looks like this:
 
 ```twig
@@ -106,7 +106,6 @@ The matched element for the current route (e.g. `entry`, `category`, etc.) is al
 ### Useful `shortcode` Methods
 
 #### `getContent()`
-
 Gets the textual content between the opening and closing shortcode tags.
 
 If the shortcode signature looks like this:
@@ -126,7 +125,6 @@ shortcode.getContent() | trim == 'Some text.'
 Without the `trim` filter it would include outer line breaks and whitespace.
 
 #### `getName()`
-
 If the shortcode signature looks like this:
 
 ```
@@ -140,7 +138,6 @@ shortcode.getName() == 'myshortcode'
 ```
 
 #### `getParameter()`
-
 If the shortcode signature looks like this:
 
 ```
@@ -162,7 +159,6 @@ shortcode.getParameter('width', 300) == 300
 The `width` parameter is not on the shortcode tag, so it defaults to `300`.
 
 #### `getParameterAt()`
-
 Retrieve an unnamed parameter by its zero-index position.
 
 If the shortcode signature looks like this:
@@ -178,7 +174,6 @@ shortcode.getParameterAt(0) == 'https://www.youtube.com/watch?v=GFze-Oj2UdA'
 ```
 
 #### `getParameters()`
-
 Retrieves all of the parameters as key/value pairs. Unnamed parameters will be keys rather than values.
 
 If the shortcode signature looks like this:
@@ -197,19 +192,15 @@ shortcode.getParameters(0) == {
 ```
 
 #### `hasContent()`
-
 Returns `true` if there is textual content between the opening and closing tags.
 
 #### `hasParameter('key')`
-
 Returns `true` if the shortcode tag has given parameter key.
 
 #### `hasParameters()`
-
 Returns `true` if the shortcode has any parameters at all.
 
 ### Template Example
-
 We’ll create a simple, contrived `video` shortcode handler; just enough to steer you in the right direction.
 
 Assuming your config file (`/config/shortcodes.php`) looks like this:
@@ -242,11 +233,9 @@ Create a template: `templates/_shortcodes/video.twig`
 This Twig example is demonstrated as PHP in the next section.
 
 ## PHP Class Handlers
-
 To handle shortcodes with PHP, create a [callable class](http://php.net/manual/en/language.oop5.magic.php#object.invoke) and add it as a handler in the configuration file.
 
 ### Callable Class Example
-
 We’ll create a simple, contrived `video` shortcode handler; just enough to steer you in the right direction. We’ll enable the example module that ships with Craft and drop a shortcode handler in there.
 
 Enable the module in `/config/app.php` by uncommenting the commented lines that ship with Craft.
@@ -267,7 +256,7 @@ Add a `VideoHandler` class in the module folder, `modules/videohandler.php`
 
 namespace modules;
 
-use samhernandez\shortcodes\handlers\ShortcodeHandlerInterface;
+use verbb\shortcodes\handlers\ShortcodeHandlerInterface;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
 class VideoHandler implements ShortcodeHandlerInterface
@@ -318,7 +307,6 @@ return [
 ```
 
 ### Context Variables
-
 You can access context variables as an array in your class like so:
 
 ```php
@@ -326,8 +314,8 @@ You can access context variables as an array in your class like so:
 
 namespace modules;
 
-use samhernandez\shortcodes\Shortcodes;
-use samhernandez\shortcodes\handlers\ShortcodeHandlerInterface;
+use verbb\shortcodes\Shortcodes;
+use verbb\shortcodes\handlers\ShortcodeHandlerInterface;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
 class MyHandler implements ShortcodeHandlerInterface
@@ -342,12 +330,11 @@ class MyHandler implements ShortcodeHandlerInterface
 ```
 
 ## Advanced Config
-
 There are two more config options: `parser` and `syntax`.
 
 ```php
 <?php
-use 'samhernandez/craft-shorcodes/Shortcodes'
+use verbb/shorcodes/Shortcodes;
 
 return [
     'map' => [
@@ -378,10 +365,14 @@ Alternative syntaxes are ignored by the WordPress parser. You'll need to use the
 
 Read the `thunderer/Shortcode` [Syntax](https://github.com/thunderer/Shortcode#syntax) docs for more information.
 
-## Contributing
+## Credits
+Originally created by [Sam Hernandez](https://github.com/samhernandez).
 
-Pull requests are welcome.
+## Show your Support
+Shortcodes is licensed under the MIT license, meaning it will always be free and open source – we love free stuff! If you'd like to show your support to the plugin regardless, [Sponsor](https://github.com/sponsors/verbb) development.
 
-I'd like to see some of the native [WordPress shortcodes](https://support.wordpress.com/shortcodes/) in Twig so they can be used with this plugin straight out of the bubble wrap.
+<h2></h2>
 
-A nicer icon would be welcome too.
+<a href="https://verbb.io" target="_blank">
+    <img width="100" src="https://verbb.io/assets/img/verbb-pill.svg">
+</a>

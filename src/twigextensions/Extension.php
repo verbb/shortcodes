@@ -1,41 +1,38 @@
 <?php
-namespace samhernandez\shortcodes\twigextensions;
+namespace verbb\shortcodes\twigextensions;
+
+use verbb\shortcodes\Shortcodes;
 
 use craft\helpers\Template as TemplateHelper;
-use samhernandez\shortcodes\Shortcodes;
-use Twig_Markup;
 
-class ShortcodesTwigExtension extends \Twig_Extension
+use Twig_Extension;
+use Twig_SimpleFunction;
+use Twig_SimpleFilter;
+use Twig_Environment;
+
+class Extension extends Twig_Extension
 {
-    /**
-     * @inheritdoc
-     */
+    // Public Methods
+    // =========================================================================
+
     public function getName()
     {
         return 'Shortcodes';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('shortcodes', [$this, 'shortcodesFilter']),
-            new \Twig_SimpleFilter('sc', [$this, 'shortcodesFilter']), // alias
+            new Twig_SimpleFilter('shortcodes', [$this, 'shortcodesFilter']),
+            new Twig_SimpleFilter('sc', [$this, 'shortcodesFilter']),
         ];
     }
 
-    /**
-     * Handles the `shortcodes` filter.
-     * @param Twig_Markup|string $markup
-     * @return Twig_Markup
-     */
     public function shortcodesFilter($markup, $options = null)
     {
         if (is_array($options) && array_key_exists('context', $options)) {
             if (is_array($options['context'])) {
-                Shortcodes::getInstance()->context->set($options['context']);
+                Shortcodes::$plugin->getContext()->set($options['context']);
             } else {
                 throw new \Exception("Shortcode context must be a key/value object in Twig");
             }
@@ -43,7 +40,7 @@ class ShortcodesTwigExtension extends \Twig_Extension
 
         $processed = Shortcodes::$shortcode->process((string) $markup);
 
-        Shortcodes::getInstance()->context->clear();
+        Shortcodes::$plugin->getContext()->clear();
 
         return TemplateHelper::raw($processed);
     }

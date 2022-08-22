@@ -1,12 +1,15 @@
 <?php
-namespace samhernandez\shortcodes;
+namespace verbb\shortcodes;
+
+use verbb\shortcodes\base\PluginTrait;
+use verbb\shortcodes\handlers\ShortcodeHandlerInterface;
+use verbb\shortcodes\handlers\TemplateHandler;
+use verbb\shortcodes\models\Settings;
+use verbb\shortcodes\twigextensions\Extension;
 
 use Craft;
 use craft\base\Plugin;
-use samhernandez\shortcodes\handlers\ShortcodeHandlerInterface;
-use samhernandez\shortcodes\handlers\TemplateHandler;
-use samhernandez\shortcodes\models\Settings;
-use samhernandez\shortcodes\twigextensions\ShortcodesTwigExtension;
+
 use Thunder\Shortcode\Parser\RegexParser;
 use Thunder\Shortcode\Parser\RegularParser;
 use Thunder\Shortcode\Parser\WordpressParser;
@@ -16,50 +19,67 @@ use Thunder\Shortcode\Syntax\Syntax;
 
 class Shortcodes extends Plugin
 {
+    // Constants
+    // =========================================================================
+
     const PARSER_REGEX = 'regex';
     const PARSER_REGULAR = 'regular';
     const PARSER_WORDPRESS = 'wordpress';
 
-    /**
-     * @var ShortcodeFacade
-     */
+
+    // Properties
+    // =========================================================================
+
+    public $schemaVersion = '1.0.0';
+    
     public static $shortcode;
 
-    /**
-     * @var string
-     */
-    public $schemaVersion = '1.0.0';
 
-    /**
-     * @inheritdoc
-     * @throws \Exception
-     */
+    // Traits
+    // =========================================================================
+
+    use PluginTrait;
+
+
+    // Public Methods
+    // =========================================================================
+
     public function init()
     {
         parent::init();
 
-        $this->setComponents([
-            'context' => \samhernandez\shortcodes\services\ContextService::class,
-        ]);
+        self::$plugin = $this;
 
-        $this->initShortcodeFacade();
-        $this->initTwig();
-        $this->initHandlers();
+        $this->_setPluginComponents();
+        $this->_setLogging();
+        $this->_registerTwigExtensions();
+
+        $this->_initShortcodeFacade();
+        $this->_initHandlers();
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createSettingsModel()
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function createSettingsModel(): Settings
     {
         return new Settings();
+    }
+
+    // Private Methods
+    // =========================================================================
+
+    private function _registerTwigExtensions()
+    {
+        Craft::$app->getView()->registerTwigExtension(new Extension);
     }
 
     /**
      * Initializes the ShortcodeFacade instance.
      * @throws \Exception
      */
-    protected function initShortcodeFacade()
+    private function _initShortcodeFacade()
     {
         self::$shortcode = new ShortcodeFacade();
         $settings = $this->getSettings();
@@ -94,21 +114,13 @@ class Shortcodes extends Plugin
     }
 
     /**
-     * Registers the `shortcodes` Twig filter.
-     */
-    protected function initTwig()
-    {
-        Craft::$app->view->registerTwigExtension(new ShortcodesTwigExtension());
-    }
-
-    /**
      * Adds handlers to the `ShortcodeFacade` instance from the config
      * `map` property array. Each array value must be a valid template route
      * or a factory function which returns a callable to handle the shortcode.
      *
      * @throws \Exception On an invalid configuration
      */
-    protected function initHandlers()
+    private function _initHandlers()
     {
         $map = $this->getSettings()->map ?? [];
 
@@ -116,7 +128,7 @@ class Shortcodes extends Plugin
             $handler = class_exists($value) ? new $value : new TemplateHandler($code, $value);
 
             if (!in_array(ShortcodeHandlerInterface::class, class_implements(get_class($handler)))) {
-                $this->invalidConfig($code, 'Shortcode handler class must implement ' . ShortcodeHandlerInterface::class);
+                $this->_invalidConfig($code, 'Shortcode handler class must implement ' . ShortcodeHandlerInterface::class);
             }
 
             static::$shortcode->addHandler($code, $handler);
@@ -129,7 +141,7 @@ class Shortcodes extends Plugin
      * @param string $extra
      * @throws \Exception
      */
-    protected function invalidConfig(string $code, $extra = '')
+    private function _invalidConfig(string $code, $extra = '')
     {
         throw new \Exception("Invalid shortcode configuration for `{$code}`. {$extra}");
     }

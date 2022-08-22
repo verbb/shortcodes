@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">
-  <line x1="14" y1="10" x2="40" y2="10" stroke="black" stroke-width="10" stroke-linecap="round" />
-  <line x1="86" y1="10" x2="60" y2="10" stroke="black" stroke-width="10" stroke-linecap="round" />
-  <line x1="14" y1="90" x2="40" y2="90" stroke="black" stroke-width="10" stroke-linecap="round" />
-  <line x1="86" y1="90" x2="60" y2="90" stroke="black" stroke-width="10" stroke-linecap="round" />
-  <line x1="16" y1="10" x2="16" y2="90" stroke="black" stroke-width="14" stroke-linecap="butt" />
-  <line x1="84" y1="10" x2="84" y2="90" stroke="black" stroke-width="14" stroke-linecap="butt" />
-  <line x1="36" y1="74" x2="66" y2="26" stroke="black" stroke-width="10" stroke-linecap="round" />
+<!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 544.2 544.2" style="enable-background:new 0 0 544.2 544.2;" xml:space="preserve">
+<path style="fill:#405260;" d="M272.1,0C2.1,0,0,121.8,0,272.1s2.1,272.1,272.1,272.1s272.1-121.8,272.1-272.1S542.1,0,272.1,0z"/>
+<g>
+	<path style="fill:#FFFFFF;" d="M142.3,203.9c0,44.1,0,93.4,0,136.1c13.8,0,30.6,0,44.8,0c0,14.5,0,23.6,0,38.2
+		c-27.5,0-54.7,0-83.4,0c0-70,0-140,0-211.7c27.4,0,55.1,0,83.7,0c0,13.6,0,22.8,0,37.4C173.5,203.9,156.8,203.9,142.3,203.9z"/>
+	<path style="fill:#FFFFFF;" d="M401.6,203.9c-14.5,0-31.2,0-45.1,0c0-14.7,0-23.8,0-38c28.3,0,55.6,0,84,0c0,70.9,0,141,0,212.4
+		c-27.8,0-55,0-83.7,0c0-13.4,0-22.4,0-37.6c13.4,0,30.6,0,44.8,0C401.6,297.3,401.6,248,401.6,203.9z"/>
+	<path style="fill:#FFFFFF;" d="M321.2,206.7c-24.2,48.4-47.8,95.7-72.1,144.2c-8.9-4.4-17-8.4-26.4-13.1
+		c24.1-48.2,47.9-95.8,72.1-144.2C304,198.1,312.2,202.2,321.2,206.7z"/>
+</g>
 </svg>

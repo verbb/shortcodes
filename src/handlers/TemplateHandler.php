@@ -1,24 +1,38 @@
 <?php
+namespace verbb\shortcodes\handlers;
 
-namespace samhernandez\shortcodes\handlers;
+use verbb\shortcodes\Shortcodes;
 
 use Craft;
 use craft\base\ElementInterface;
-use Exception;
-use RuntimeException;
-use Thunder\Shortcode\Shortcode\ShortcodeInterface;
-use Twig_Error_Loader;
+
 use yii\base\BaseObject;
 use yii\base\Event;
-use samhernandez\shortcodes\Shortcodes;
+
+use Exception;
+use RuntimeException;
+use Twig_Error_Loader;
+
+use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
 class TemplateHandler extends BaseObject implements ShortcodeHandlerInterface
 {
+    // Constants
+    // =========================================================================
+
     const EVENT_BEFORE_RENDER = 'beforeRender';
+
+
+    // Properties
+    // =========================================================================
 
     public $template;
     public $code;
     public $context;
+
+
+    // Public Methods
+    // =========================================================================
 
     /**
      * TemplateHandler constructor.
@@ -36,6 +50,25 @@ class TemplateHandler extends BaseObject implements ShortcodeHandlerInterface
     }
 
     /**
+     * @param ShortcodeInterface $shortcode
+     * @return string
+     * @throws Twig_Error_Loader if the template doesn't exist
+     * @throws Exception in case of failure
+     * @throws RuntimeException in case of failure
+     */
+    public function __invoke(ShortcodeInterface $shortcode)
+    {
+        $this->setContext($shortcode);
+        $rendered = Craft::$app->getView()->renderTemplate($this->template, $this->context);
+
+        return $rendered;
+    }
+
+
+    // Protected Methods
+    // =========================================================================
+
+    /**
      * Assembles Twig context variables for the template. It includes the
      * element variable for convenience: `entry`, `category`, etc.
      *
@@ -46,16 +79,18 @@ class TemplateHandler extends BaseObject implements ShortcodeHandlerInterface
         $context = ['shortcode' => $shortcode];
 
         /** @var ElementInterface $element */
-        $element = Craft::$app->urlManager->getMatchedElement();
+        $element = Craft::$app->getUrlManager()->getMatchedElement();
+
         if ($element) {
             $context[$element->refHandle()] = $element;
         }
 
         // The plugin stashes any context provided by the Twig filter
         // so we'll check for a stash and add it
-        $shortcodeContext = Shortcodes::getInstance()->context->get();
+        $shortcodeContext = Shortcodes::$plugin->getContext()->get();
+        
         if (is_array($shortcodeContext)) {
-            foreach($shortcodeContext as $key => $value) {
+            foreach ($shortcodeContext as $key => $value) {
                 $context[$key] = $value;
             }
         }
@@ -66,18 +101,4 @@ class TemplateHandler extends BaseObject implements ShortcodeHandlerInterface
         Event::trigger($this, static::EVENT_BEFORE_RENDER);
     }
 
-    /**
-     * @param ShortcodeInterface $shortcode
-     * @return string
-     * @throws Twig_Error_Loader if the template doesn't exist
-     * @throws Exception in case of failure
-     * @throws RuntimeException in case of failure
-     */
-    public function __invoke(ShortcodeInterface $shortcode)
-    {
-        $this->setContext($shortcode);
-        $rendered = Craft::$app->view->renderTemplate($this->template, $this->context);
-
-        return $rendered;
-    }
 }

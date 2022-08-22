@@ -1,34 +1,47 @@
 {
-  "name": "samhernandez/craft-shortcodes",
-  "description": "WordPress style shortcodes twig filter and template mapping",
-  "version": "1.1.0",
-  "type": "craft-plugin",
-  "keywords": ["WordPress", "bbPress", "shortcodes"],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Sam Hernandez",
-      "homepage": "https://github.com/samhernandez"
+    "name": "verbb/shortcodes",
+    "description": "Automatically login based on whitelisted IP, basic auth username or URL keys",
+    "type": "craft-plugin",
+    "version": "2.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "shortcodes"
+    ],
+    "support": {
+        "email": "support@verbb.io",
+        "issues": "https://github.com/verbb/shortcodes/issues?state=open",
+        "source": "https://github.com/verbb/shortcodes",
+        "docs": "https://github.com/verbb/shortcodes",
+        "rss": "https://github.com/verbb/shortcodes/commits/v2.atom"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Verbb",
+            "homepage": "https://verbb.io"
+        },
+        {
+            "name": "Sam Hernandez",
+            "homepage": "https://github.com/samhernandez"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.7.0",
+        "verbb/base": "^1.0.2",
+        "thunderer/shortcode": "^0.7.4"
+    },
+    "autoload": {
+        "psr-4": {
+          "verbb\\shortcodes\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Shortcodes",
+        "handle": "shortcodes",
+        "changelogUrl": "https://raw.githubusercontent.com/verbb/shortcodes/craft-3/CHANGELOG.md",
+        "class": "verbb\\shortcodes\\Shortcodes"
     }
-  ],
-  "support": {
-    "email": "sam@silvertoncreative.com",
-    "issues": "https://github.com/samhernandez/craft-shortcodes/issues",
-    "source": "https://github.com/samhernandez/craft-shortcodes",
-    "docs": "https://github.com/samhernandez/craft-shortcodes"
-  },
-  "require": {
-    "craftcms/cms": "^3.0.0",
-    "thunderer/shortcode": "^0.7.4"
-  },
-  "autoload": {
-    "psr-4": {
-      "samhernandez\\shortcodes\\": "src/"
-    }
-  },
-  "extra": {
-    "handle": "shortcodes",
-    "name": "Shortcodes",
-    "class": "samhernandez\\shortcodes\\Shortcodes"
-  }
 }
