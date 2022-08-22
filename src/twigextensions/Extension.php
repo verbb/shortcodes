@@ -5,40 +5,41 @@ use verbb\shortcodes\Shortcodes;
 
 use craft\helpers\Template as TemplateHelper;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
-use Twig_SimpleFilter;
-use Twig_Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\Markup;
+use Twig\TwigFilter;
 
-class Extension extends Twig_Extension
+use Exception;
+
+class Extension extends AbstractExtension
 {
     // Public Methods
     // =========================================================================
 
-    public function getName()
+    public function getName(): string
     {
         return 'Shortcodes';
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new Twig_SimpleFilter('shortcodes', [$this, 'shortcodesFilter']),
-            new Twig_SimpleFilter('sc', [$this, 'shortcodesFilter']),
+            new TwigFilter('shortcodes', [$this, 'shortcodesFilter']),
+            new TwigFilter('sc', [$this, 'shortcodesFilter']),
         ];
     }
 
-    public function shortcodesFilter($markup, $options = null)
+    public function shortcodesFilter($markup, $options = null): Markup
     {
         if (is_array($options) && array_key_exists('context', $options)) {
             if (is_array($options['context'])) {
                 Shortcodes::$plugin->getContext()->set($options['context']);
             } else {
-                throw new \Exception("Shortcode context must be a key/value object in Twig");
+                throw new Exception('Shortcode context must be a key/value object in Twig');
             }
         }
 
-        $processed = Shortcodes::$shortcode->process((string) $markup);
+        $processed = Shortcodes::$shortcode->process((string)$markup);
 
         Shortcodes::$plugin->getContext()->clear();
 

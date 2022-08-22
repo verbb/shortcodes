@@ -10,6 +10,8 @@ use verbb\shortcodes\twigextensions\Extension;
 use Craft;
 use craft\base\Plugin;
 
+use Exception;
+
 use Thunder\Shortcode\Parser\RegexParser;
 use Thunder\Shortcode\Parser\RegularParser;
 use Thunder\Shortcode\Parser\WordpressParser;
@@ -22,16 +24,16 @@ class Shortcodes extends Plugin
     // Constants
     // =========================================================================
 
-    const PARSER_REGEX = 'regex';
-    const PARSER_REGULAR = 'regular';
-    const PARSER_WORDPRESS = 'wordpress';
+    public const PARSER_REGEX = 'regex';
+    public const PARSER_REGULAR = 'regular';
+    public const PARSER_WORDPRESS = 'wordpress';
 
 
     // Properties
     // =========================================================================
 
     public $schemaVersion = '1.0.0';
-    
+
     public static $shortcode;
 
 
@@ -44,7 +46,7 @@ class Shortcodes extends Plugin
     // Public Methods
     // =========================================================================
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -70,16 +72,17 @@ class Shortcodes extends Plugin
     // Private Methods
     // =========================================================================
 
-    private function _registerTwigExtensions()
+    private function _registerTwigExtensions(): void
     {
         Craft::$app->getView()->registerTwigExtension(new Extension);
     }
 
     /**
      * Initializes the ShortcodeFacade instance.
-     * @throws \Exception
+     *
+     * @throws Exception
      */
-    private function _initShortcodeFacade()
+    private function _initShortcodeFacade(): void
     {
         self::$shortcode = new ShortcodeFacade();
         $settings = $this->getSettings();
@@ -89,7 +92,7 @@ class Shortcodes extends Plugin
             $symbols = $settings->syntax;
 
             if (count($symbols) !== 5) {
-                throw new \Exception("Invalid Shortcode syntax. It must be an array with 5 symbols like: ['[[', ']]' , '//', '== , '\"\"']");
+                throw new Exception("Invalid Shortcode syntax. It must be an array with 5 symbols like: ['[[', ']]' , '//', '== , '\"\"']");
             }
 
             $syntax = new Syntax($symbols[0], $symbols[1], $symbols[2], $symbols[3], $symbols[4]);
@@ -118,9 +121,9 @@ class Shortcodes extends Plugin
      * `map` property array. Each array value must be a valid template route
      * or a factory function which returns a callable to handle the shortcode.
      *
-     * @throws \Exception On an invalid configuration
+     * @throws Exception On an invalid configuration
      */
-    private function _initHandlers()
+    private function _initHandlers(): void
     {
         $map = $this->getSettings()->map ?? [];
 
@@ -137,12 +140,13 @@ class Shortcodes extends Plugin
 
     /**
      * Throws a general Exception for invalid configuration;
+     *
      * @param string $code
      * @param string $extra
-     * @throws \Exception
+     * @throws Exception
      */
-    private function _invalidConfig(string $code, $extra = '')
+    private function _invalidConfig(string $code, string $extra = ''): void
     {
-        throw new \Exception("Invalid shortcode configuration for `{$code}`. {$extra}");
+        throw new Exception("Invalid shortcode configuration for `{$code}`. {$extra}");
     }
 }

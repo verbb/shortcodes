@@ -10,6 +10,7 @@ class Context extends Component
 
     /**
      * Key/value array for Twig template context
+     *
      * @var array
      */
     protected $context = [];
@@ -18,28 +19,17 @@ class Context extends Component
     // Public Methods
     // =========================================================================
 
-    /**
-     * @throws \Exception
-     * @param array $context
-     */
-    public function set($context)
+    public function set(array $context): void
     {
-        if (!is_array($context)) {
-            throw new \Exception("Context must be of type Array");
-        }
-
         $this->context = $context;
     }
 
-    /**
-     * @return array
-     */
-    public function get()
+    public function get(): array
     {
         return $this->context;
     }
 
-    public function clear()
+    public function clear(): void
     {
         $this->context = [];
     }
