@@ -4,39 +4,35 @@ namespace verbb\shortcodes\base;
 use verbb\shortcodes\Shortcodes;
 use verbb\shortcodes\services\Context;
 
-use Craft;
-
-use yii\log\Logger;
-
-use verbb\base\BaseHelper;
+use verbb\base\LogTrait;
+use verbb\base\helpers\Plugin;
 
 trait PluginTrait
 {
-    // Static Properties
+    // Properties
     // =========================================================================
 
-    public static Shortcodes $plugin;
+    public static ?Shortcodes $plugin = null;
 
 
-    // Public Methods
+    // Traits
     // =========================================================================
 
-    public static function log($message, $attributes = []): void
+    use LogTrait;
+    
+
+    // Static Methods
+    // =========================================================================
+
+    public static function config(): array
     {
-        if ($attributes) {
-            $message = Craft::t('shortcodes', $message, $attributes);
-        }
+        Plugin::bootstrapPlugin('shortcodes');
 
-        Craft::getLogger()->log($message, Logger::LEVEL_INFO, 'shortcodes');
-    }
-
-    public static function error($message, $attributes = []): void
-    {
-        if ($attributes) {
-            $message = Craft::t('shortcodes', $message, $attributes);
-        }
-
-        Craft::getLogger()->log($message, Logger::LEVEL_ERROR, 'shortcodes');
+        return [
+            'components' => [
+                'context' => Context::class,
+            ],
+        ];
     }
 
 
@@ -46,24 +42,6 @@ trait PluginTrait
     public function getContext(): Context
     {
         return $this->get('context');
-    }
-
-
-    // Private Methods
-    // =========================================================================
-
-    private function _setPluginComponents(): void
-    {
-        $this->setComponents([
-            'context' => Context::class,
-        ]);
-
-        BaseHelper::registerModule();
-    }
-
-    private function _setLogging(): void
-    {
-        BaseHelper::setFileLogging('shortcodes');
     }
 
 }
