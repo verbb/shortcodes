@@ -216,8 +216,7 @@ Add a `VideoHandler` class in the module folder, `modules/videohandler.php`
 
 ```php
 <?php
-
-namespace modules;
+namespace modules\sitemodule;
 
 use verbb\shortcodes\handlers\ShortcodeHandlerInterface;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
@@ -259,7 +258,6 @@ Now add the fully qualified class name to the config file, `config/shortcodes.ph
 
 ```php
 <?php
-
 use modules\VideoHandler;
 
 return [
@@ -274,8 +272,7 @@ You can access context variables as an array in your class like so:
 
 ```php
 <?php
-
-namespace modules;
+namespace modules\sitemodule;
 
 use verbb\shortcodes\Shortcodes;
 use verbb\shortcodes\handlers\ShortcodeHandlerInterface;
