@@ -1,5 +1,5 @@
 # Shortcodes plugin for Craft CMS
-<img width="500" src="https://verbb.imgix.net/plugins/shortcodes/shortcodes-social-card.png?v=1">
+<img width="500" src="https://verbb.imgix.net/plugins/shortcodes/shortcodes-social-card.png?v=2">
 
 Shortcodes is a Craft CMS plugin that adds [WordPress style shortcodes](https://support.wordpress.com/shortcodes/) to custom templates or PHP class handlers.
 
