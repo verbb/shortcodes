@@ -243,6 +243,14 @@
       "oAP" : "\/src\/Shortcodes.php",
       "oF" : 0
     },
+    "\/src\/translations\/en\/shortcodes.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 2,
+      "oAP" : "\/src\/translations\/en\/shortcodes.php",
+      "oF" : 0
+    },
     "\/src\/twigextensions" : {
       "ft" : 65536,
       "oA" : 1,
