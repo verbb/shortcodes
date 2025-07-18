@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.1 - 2025-07-18
+
+### Changed
+- Update English translations.
+
+### Fixed
+- Fix description.
+
 ## 3.0.0 - 2022-08-22
 
 ### Changed
