@@ -6,6 +6,14 @@
 - Now requires PHP `8.2.0+`.
 - Now requires Craft `5.0.0+`.
 
+## 3.0.1 - 2025-07-18
+
+### Changed
+- Update English translations.
+
+### Fixed
+- Fix description.
+
 ## 3.0.0 - 2022-08-22
 
 ### Changed
@@ -22,15 +30,10 @@
 
 ## 1.0.5 - 2020-11-29
 
-### Added
-- Adds context variables option for the Twig filter.
-
-## 1.0.5 - 2020-11-29
-
 ### Changed
 - Updates shortcodes library.
 
-## 1.0.4 - 2020-03-10 
+## 1.0.4 - 2020-03-10
 
 - Version bump.
 
