@@ -2,7 +2,7 @@
     "name": "verbb/shortcodes",
     "description": "Use Wordpress-style shortcodes in your Twig templates.",
     "type": "craft-plugin",
-    "version": "4.0.1",
+    "version": "5.0.0-alpha.1",
     "keywords": [
         "craft",
         "cms",
@@ -29,10 +29,10 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "craftcms/cms": "^5.0.0",
+        "php": "^8.4",
+        "craftcms/cms": "6.x-dev",
         "thunderer/shortcode": "^0.7.4",
-        "verbb/base": "^3.0.0"
+        "verbb/base": "dev-craft-6"
     },
     "autoload": {
         "psr-4": {
@@ -42,7 +42,9 @@
     "extra": {
         "name": "Shortcodes",
         "handle": "shortcodes",
-        "changelogUrl": "https://raw.githubusercontent.com/verbb/shortcodes/craft-5/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/verbb/shortcodes/craft-6/CHANGELOG.md",
         "class": "verbb\\shortcodes\\Shortcodes"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
