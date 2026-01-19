@@ -1,4 +1,4 @@
-<p align="center"><img src="https://verbb.imgix.net/plugins/shortcodes/shortcodes-icon.svg" width="100" height="100" alt="Shortcodes icon"></p>
+<p align="center"><img src="https://assets.verbb.io/plugins/shortcodes/shortcodes-icon.svg" width="100" height="100" alt="Shortcodes icon"></p>
 <h1 align="center">Shortcodes for Craft CMS</h1>
 
 Shortcodes is a Craft CMS plugin that adds [WordPress style shortcodes](https://support.wordpress.com/shortcodes/) to custom templates or PHP class handlers.
