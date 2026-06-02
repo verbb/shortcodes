@@ -13,6 +13,12 @@ There is a short alias, `sc`, if you prefer it.
 <div>{{ entry.legacyContent | sc }}</div>
 ```
 
+For block-level shortcodes in rich text fields, use `shortcodes_blocks`. This unwraps paragraphs that contain only a shortcode before processing, which helps with editors like Redactor that store standalone text as paragraphs.
+
+```twig
+{{ entry.richTextField | shortcodes_blocks }}
+```
+
 You can include context for the shortcode handlers.
 
 ```twig
