@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.2 - 2026-06-05
+
+### Added
+- Add `shortcodes_blocks` Twig filter for block-level shortcodes in rich text fields.
+
 ## 4.0.1 - 2025-07-18
 
 ### Changed
