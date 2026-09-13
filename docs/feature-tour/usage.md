@@ -1,5 +1,7 @@
 # Usage
 
+Start by mapping a shortcode name to its handler template in [Configuration](docs:get-started/configuration). The example there creates a `notice` shortcode and shows its input and rendered result. The filters below apply those mappings to your content.
+
 ## Twig Filter
 Add the twig filter, `shortcodes`, to any field that might contain shortcodes.
 
@@ -24,8 +26,7 @@ You can include context for the shortcode handlers.
 ```twig
 {{ entry.textField | shortcodes({
     context: {
-        foo: 'foo',
-        ...
+        foo: 'foo'
     }
 }) }}
 ```
@@ -56,7 +57,7 @@ Any context variables you pass to the Twig filter are available in the template.
 then your handler template can use those variables like so:
 
 ```twig
-{% if block.handle === 'foo' %}
+{% if block.type.handle == 'text' %}
   <p class="foo-text">{{ field }}</p>
 {% endif %}
 
