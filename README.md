@@ -3,6 +3,8 @@
 
 Shortcodes is a Craft CMS plugin that adds [WordPress style shortcodes](https://support.wordpress.com/shortcodes/) to custom templates or PHP class handlers.
 
+Process shortcodes as inline content or block-level output in supported rich-text values.
+
 ## Documentation
 Visit the [Shortcodes Plugin page](https://verbb.io/craft-plugins/shortcodes) for all documentation, guides, pricing and developer resources.
 
