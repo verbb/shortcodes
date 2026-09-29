@@ -1,6 +1,6 @@
 {
     "name": "verbb/shortcodes",
-    "description": "Use Wordpress-style shortcodes in your Twig templates.",
+    "description": "A Craft CMS plugin for creating reusable shortcodes that map to Twig templates.",
     "type": "craft-plugin",
     "version": "4.0.3",
     "keywords": [
