@@ -5,6 +5,7 @@ use verbb\shortcodes\base\PluginTrait;
 use verbb\shortcodes\handlers\ShortcodeHandlerInterface;
 use verbb\shortcodes\handlers\TemplateHandler;
 use verbb\shortcodes\models\Settings;
+use verbb\shortcodes\parsers\HtmlAwareParser;
 use verbb\shortcodes\twigextensions\Extension;
 
 use Craft;
@@ -99,19 +100,24 @@ class Shortcodes extends Plugin
         }
 
         // Parser
+        $parserSyntax = $syntax;
+
         switch ($settings->parser) {
             case static::PARSER_REGEX:
-                self::$shortcode->setParser(new RegexParser($syntax));
+                $parser = new RegexParser($syntax);
                 break;
 
             case static::PARSER_REGULAR:
-                self::$shortcode->setParser(new RegularParser($syntax));
+                $parser = new RegularParser($syntax);
                 break;
 
             default:
-                self::$shortcode->setParser(new WordpressParser());
+                $parser = new WordpressParser();
+                $parserSyntax = new CommonSyntax();
                 break;
         }
+
+        self::$shortcode->setParser(new HtmlAwareParser($parser, $parserSyntax));
     }
 
     /**
