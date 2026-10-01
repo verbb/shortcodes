@@ -72,7 +72,7 @@ class Shortcodes extends Plugin
 
     private function _registerTwigExtensions(): void
     {
-        Craft::$app->getView()->registerTwigExtension(new Extension);
+        Craft::$app->getView()->registerTwigExtension(new Extension());
     }
 
     /**
@@ -126,7 +126,7 @@ class Shortcodes extends Plugin
         $map = $this->getSettings()->map ?? [];
 
         foreach ($map as $code => $value) {
-            $handler = class_exists($value) ? new $value : new TemplateHandler($code, $value);
+            $handler = class_exists($value) ? new $value() : new TemplateHandler($code, $value);
 
             if (!in_array(ShortcodeHandlerInterface::class, class_implements(get_class($handler)))) {
                 $this->_invalidConfig($code, 'Shortcode handler class must implement ' . ShortcodeHandlerInterface::class);
