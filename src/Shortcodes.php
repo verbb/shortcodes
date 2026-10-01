@@ -2,6 +2,7 @@
 namespace verbb\shortcodes;
 
 use verbb\shortcodes\base\PluginTrait;
+use verbb\shortcodes\facades\ShortcodeFacade as TrackingShortcodeFacade;
 use verbb\shortcodes\handlers\ShortcodeHandlerInterface;
 use verbb\shortcodes\handlers\TemplateHandler;
 use verbb\shortcodes\models\Settings;
@@ -83,7 +84,7 @@ class Shortcodes extends Plugin
      */
     private function _initShortcodeFacade(): void
     {
-        self::$shortcode = new ShortcodeFacade();
+        self::$shortcode = new TrackingShortcodeFacade();
         $settings = $this->getSettings();
 
         // Syntax

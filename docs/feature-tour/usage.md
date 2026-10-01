@@ -3,7 +3,7 @@
 Start by mapping a shortcode name to its handler template in [Configuration](docs:get-started/configuration). The example there creates a `notice` shortcode and shows its input and rendered result. The filters below apply those mappings to your content.
 
 ## Twig Filter
-Add the twig filter, `shortcodes`, to any field that might contain shortcodes.
+Apply the `shortcodes` Twig filter to a field that might contain shortcodes. The result is an HTML fragment, so render it between element tags rather than inside an HTML attribute, URL, JavaScript or CSS value.
 
 ```twig
 <div>{{ entry.legacyContent | shortcodes }}</div>
@@ -14,6 +14,8 @@ There is a short alias, `sc`, if you prefer it.
 ```twig
 <div>{{ entry.legacyContent | sc }}</div>
 ```
+
+Craft rich-text fields are already marked as safe HTML, so their stored markup is preserved. Other values, including Plain Text fields, are HTML-encoded around recognised shortcodes. Shortcode parameters and content still reach the configured handler unchanged, where Twig's normal context-aware escaping applies.
 
 For block-level shortcodes in rich text fields, use `shortcodes_blocks`. This unwraps paragraphs that contain only a shortcode before processing, which helps with editors like Redactor that store standalone text as paragraphs.
 
