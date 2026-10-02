@@ -84,8 +84,8 @@ class Shortcodes extends Plugin
      */
     private function _initShortcodeFacade(): void
     {
-        self::$shortcode = new TrackingShortcodeFacade();
         $settings = $this->getSettings();
+        self::$shortcode = new TrackingShortcodeFacade($settings->maxInputLength);
 
         // Syntax
         if ($settings->syntax) {

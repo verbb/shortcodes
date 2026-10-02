@@ -37,13 +37,24 @@ class Extension extends AbstractExtension
 
     public function shortcodesFilter($markup, $options = null): Markup
     {
-        return $this->processShortcodes((string)$markup, $options, $markup instanceof Markup);
+        $trustedHtml = $markup instanceof Markup;
+        $markup = (string)$markup;
+
+        if ($this->_inputExceedsLimit($markup)) {
+            return $this->_unprocessedMarkup($markup, $trustedHtml);
+        }
+
+        return $this->processShortcodes($markup, $options, $trustedHtml);
     }
 
     public function shortcodesBlocksFilter($markup, $options = null): Markup
     {
         $trustedHtml = $markup instanceof Markup;
         $markup = (string)$markup;
+
+        if ($this->_inputExceedsLimit($markup)) {
+            return $this->_unprocessedMarkup($markup, $trustedHtml);
+        }
 
         if ($trustedHtml) {
             $markup = $this->unwrapBlockShortcodes($markup);
@@ -96,6 +107,18 @@ class Extension extends AbstractExtension
             $syntaxObject->getClosingTag(),
             $syntaxObject->getClosingTagMarker(),
         ];
+    }
+
+    private function _inputExceedsLimit(string $markup): bool
+    {
+        $maxInputLength = Shortcodes::$plugin->getSettings()->maxInputLength;
+
+        return $maxInputLength > 0 && strlen($markup) > $maxInputLength;
+    }
+
+    private function _unprocessedMarkup(string $markup, bool $trustedHtml): Markup
+    {
+        return TemplateHelper::raw($trustedHtml ? $markup : Html::encode($markup));
     }
 
     private function _encodeUnhandledShortcode($shortcode, ?string $safeContent, array $syntax): string

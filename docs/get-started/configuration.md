@@ -31,3 +31,11 @@ Add `[notice]` to a text field, then apply the `shortcodes` filter when renderin
 
 Maps shortcode names to handlers. The opening example uses a Twig template path relative to your project's templates directory. Add further names to the same map for other reusable content.
 :::
+
+::: reference
+### `maxInputLength`
+
+**Type:** `int` · **Default:** `1048576`
+
+Sets the maximum number of bytes that Shortcodes will parse in one value. Oversized rich-text values are returned without expanding shortcodes, while oversized plain-text values remain HTML-encoded. This protects page renders from excessive parser work. Set this to `0` only when another trusted layer enforces an equivalent limit.
+:::

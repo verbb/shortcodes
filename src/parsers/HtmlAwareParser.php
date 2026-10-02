@@ -12,6 +12,14 @@ use Thunder\Shortcode\Syntax\SyntaxInterface;
  */
 class HtmlAwareParser implements ParserInterface
 {
+    // Constants
+    // =========================================================================
+
+    // These budgets keep dense inputs below Thunder's high-cost parser paths while preserving ordinary long-form content.
+    private const MAX_HTML_MARKUP_RANGES = 10_000;
+    private const MAX_SYNTAX_TOKENS = 1_000;
+
+
     // Properties
     // =========================================================================
 
@@ -32,11 +40,19 @@ class HtmlAwareParser implements ParserInterface
     {
         $text = (string)$text;
 
+        if ($this->_syntaxTokenLimitExceeded($text)) {
+            return [];
+        }
+
         if (!str_contains($text, '<')) {
             return $this->parser->parse($text);
         }
 
         $htmlMarkupRanges = $this->_htmlMarkupRanges($text);
+
+        if ($htmlMarkupRanges === null) {
+            return [];
+        }
 
         if (!$htmlMarkupRanges) {
             return $this->parser->parse($text);
@@ -65,6 +81,28 @@ class HtmlAwareParser implements ParserInterface
 
     // Private Methods
     // =========================================================================
+
+    private function _syntaxTokenLimitExceeded(string $text): bool
+    {
+        $tokenCount = 0;
+
+        foreach (array_unique([$this->syntax->getOpeningTag(), $this->syntax->getClosingTag()]) as $syntaxTag) {
+            $syntaxLength = strlen($syntaxTag);
+            $offset = 0;
+
+            while (($syntaxStart = strpos($text, $syntaxTag, $offset)) !== false) {
+                $tokenCount++;
+
+                if ($tokenCount > self::MAX_SYNTAX_TOKENS) {
+                    return true;
+                }
+
+                $offset = $syntaxStart + $syntaxLength;
+            }
+        }
+
+        return false;
+    }
 
     private function _shortcodeSyntaxIntersectsMarkup(ParsedShortcodeInterface $shortcode, array $htmlMarkupRanges): bool
     {
@@ -143,26 +181,40 @@ class HtmlAwareParser implements ParserInterface
         $openingTag = $this->syntax->getOpeningTag();
         $closingTag = $this->syntax->getClosingTag();
         $maskCharacter = $this->_maskCharacter($openingTag . $closingTag);
-        $characters = mb_str_split($text, 1, 'UTF-8');
+        $maskRanges = [];
 
         foreach (array_unique([$openingTag, $closingTag]) as $syntaxTag) {
-            $syntaxLength = mb_strlen($syntaxTag, 'UTF-8');
+            $syntaxLength = strlen($syntaxTag);
             $offset = 0;
 
-            while (($syntaxStart = mb_strpos($text, $syntaxTag, $offset, 'UTF-8')) !== false) {
+            while (($syntaxStart = strpos($text, $syntaxTag, $offset)) !== false) {
                 $syntaxEnd = $syntaxStart + $syntaxLength;
 
-                if ($this->_rangeIntersectsMarkup($syntaxStart, $syntaxEnd, $htmlMarkupRanges)) {
-                    for ($i = $syntaxStart; $i < $syntaxEnd; $i++) {
-                        $characters[$i] = $maskCharacter;
-                    }
+                if ($this->_rangeIntersectsMarkup($syntaxStart, $syntaxEnd, $htmlMarkupRanges, 2, 3)) {
+                    $maskRanges[] = [$syntaxStart, $syntaxEnd];
                 }
 
                 $offset = $syntaxEnd;
             }
         }
 
-        return implode('', $characters);
+        if (!$maskRanges) {
+            return $text;
+        }
+
+        usort($maskRanges, fn(array $a, array $b): int => $a[0] <=> $b[0]);
+        $maskRanges = $this->_mergeRanges($maskRanges);
+        $maskedText = '';
+        $offset = 0;
+
+        // Rebuild from byte-aligned substrings to avoid a PHP array entry for every character.
+        foreach ($maskRanges as [$maskStart, $maskEnd]) {
+            $maskedText .= substr($text, $offset, $maskStart - $offset);
+            $maskedText .= str_repeat($maskCharacter, mb_strlen(substr($text, $maskStart, $maskEnd - $maskStart), 'UTF-8'));
+            $offset = $maskEnd;
+        }
+
+        return $maskedText . substr($text, $offset);
     }
 
     private function _maskCharacter(string $syntax): string
@@ -178,14 +230,39 @@ class HtmlAwareParser implements ParserInterface
         return "\0";
     }
 
-    private function _rangeIntersectsMarkup(int $start, int $end, array $htmlMarkupRanges): bool
+    private function _mergeRanges(array $ranges): array
     {
-        foreach ($htmlMarkupRanges as [$htmlStart, $htmlEnd]) {
-            if ($htmlStart >= $end) {
-                return false;
+        $mergedRanges = [];
+
+        foreach ($ranges as [$start, $end]) {
+            $lastIndex = array_key_last($mergedRanges);
+
+            if ($lastIndex === null || $start > $mergedRanges[$lastIndex][1]) {
+                $mergedRanges[] = [$start, $end];
+                continue;
             }
 
-            if ($start < $htmlEnd && $end > $htmlStart) {
+            $mergedRanges[$lastIndex][1] = max($mergedRanges[$lastIndex][1], $end);
+        }
+
+        return $mergedRanges;
+    }
+
+    private function _rangeIntersectsMarkup(int $start, int $end, array $htmlMarkupRanges, int $startIndex = 0, int $endIndex = 1): bool
+    {
+        $lower = 0;
+        $upper = count($htmlMarkupRanges) - 1;
+
+        while ($lower <= $upper) {
+            $middle = intdiv($lower + $upper, 2);
+            $htmlStart = $htmlMarkupRanges[$middle][$startIndex];
+            $htmlEnd = $htmlMarkupRanges[$middle][$endIndex];
+
+            if ($htmlEnd <= $start) {
+                $lower = $middle + 1;
+            } elseif ($htmlStart >= $end) {
+                $upper = $middle - 1;
+            } else {
                 return true;
             }
         }
@@ -193,7 +270,7 @@ class HtmlAwareParser implements ParserInterface
         return false;
     }
 
-    private function _htmlMarkupRanges(string $text): array
+    private function _htmlMarkupRanges(string $text): ?array
     {
         $ranges = [];
         $offset = 0;
@@ -216,7 +293,12 @@ class HtmlAwareParser implements ParserInterface
             $htmlEnd = $this->_htmlMarkupEnd($text, $htmlStart);
             $characterStart = $characterOffset + mb_strlen(substr($text, $lastByteOffset, $htmlStart - $lastByteOffset), 'UTF-8');
             $characterEnd = $characterStart + mb_strlen(substr($text, $htmlStart, $htmlEnd - $htmlStart), 'UTF-8');
-            $ranges[] = [$characterStart, $characterEnd];
+            $ranges[] = [$characterStart, $characterEnd, $htmlStart, $htmlEnd];
+
+            if (count($ranges) > self::MAX_HTML_MARKUP_RANGES) {
+                return null;
+            }
+
             $offset = $htmlEnd;
             $characterOffset = $characterEnd;
             $lastByteOffset = $htmlEnd;

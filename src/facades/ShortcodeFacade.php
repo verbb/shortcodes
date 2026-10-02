@@ -1,6 +1,8 @@
 <?php
 namespace verbb\shortcodes\facades;
 
+use verbb\shortcodes\models\Settings;
+
 use Thunder\Shortcode\Event\ReplaceShortcodesEvent;
 use Thunder\Shortcode\Events;
 use Thunder\Shortcode\ShortcodeFacade as BaseShortcodeFacade;
@@ -14,6 +16,8 @@ class ShortcodeFacade extends BaseShortcodeFacade
 
     private array $_handlerNames = [];
 
+    private int $_maxInputLength;
+
     private array $_plainTextContexts = [];
 
     private int $_plainTextSuspensions = 0;
@@ -22,8 +26,10 @@ class ShortcodeFacade extends BaseShortcodeFacade
     // Public Methods
     // =========================================================================
 
-    public function __construct()
+    public function __construct(int $maxInputLength = Settings::DEFAULT_MAX_INPUT_LENGTH)
     {
+        $this->_maxInputLength = $maxInputLength;
+
         parent::__construct();
 
         parent::addEventHandler(Events::FILTER_SHORTCODES, function($event): void {
@@ -66,6 +72,10 @@ class ShortcodeFacade extends BaseShortcodeFacade
 
     public function process($text)
     {
+        if ($this->_inputExceedsLimit((string)$text)) {
+            return (string)$text;
+        }
+
         if ($this->_plainTextContexts === []) {
             return parent::process($text);
         }
@@ -79,8 +89,21 @@ class ShortcodeFacade extends BaseShortcodeFacade
         }
     }
 
+    public function parse($text)
+    {
+        if ($this->_inputExceedsLimit((string)$text)) {
+            return [];
+        }
+
+        return parent::parse($text);
+    }
+
     public function processPlainText(string $text, callable $encodeLiteral, callable $encodeUnhandledShortcode): string
     {
+        if ($this->_inputExceedsLimit($text)) {
+            return $encodeLiteral($text);
+        }
+
         $this->_plainTextContexts[] = [
             'children' => [],
             'encodeLiteral' => $encodeLiteral,
@@ -97,6 +120,11 @@ class ShortcodeFacade extends BaseShortcodeFacade
 
     // Private Methods
     // =========================================================================
+
+    private function _inputExceedsLimit(string $text): bool
+    {
+        return $this->_maxInputLength > 0 && strlen($text) > $this->_maxInputLength;
+    }
 
     private function _dispatchEvent(string $name, object $event): void
     {
