@@ -1,5 +1,5 @@
 <?php
-namespace verbb\shortcodes\twigextensions;
+namespace verbb\shortcodes\web\twig;
 
 use verbb\shortcodes\facades\ShortcodeFacade as TrackingShortcodeFacade;
 use verbb\shortcodes\Shortcodes;

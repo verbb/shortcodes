@@ -7,7 +7,7 @@ use verbb\shortcodes\handlers\ShortcodeHandlerInterface;
 use verbb\shortcodes\handlers\TemplateHandler;
 use verbb\shortcodes\models\Settings;
 use verbb\shortcodes\parsers\HtmlAwareParser;
-use verbb\shortcodes\twigextensions\Extension;
+use verbb\shortcodes\web\twig\Extension;
 
 use Craft;
 use craft\base\Plugin;
