@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 4.0.5 - 2026-10-05
 
 ### Fixed
 - Fixed a medium-severity resource exhaustion vulnerability.
