@@ -10,4 +10,3 @@ Register a shortcode name and handler, then let authors place that token within 
 - Update presentation centrally while stored content stays concise.
 - Process shortcodes inside the content formats selected by the project.
 - Use a shortcode within surrounding text or as a block-level component.
-- Add the component vocabulary the site needs rather than a fixed catalogue.

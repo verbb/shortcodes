@@ -13,19 +13,22 @@ Register a shortcode name and handler, then let authors place that token within 
 - Update presentation centrally while stored content stays concise.
 - Process shortcodes inside the content formats selected by the project.
 - Use a shortcode within surrounding text or as a block-level component.
-- Add the component vocabulary the site needs rather than a fixed catalogue.
 
 ## Documentation
+
 Visit the [Shortcodes Plugin page](https://verbb.io/craft-plugins/shortcodes) for all documentation, guides, pricing and developer resources.
 
 ## Credit & Thanks
+
 Originally created by [Sam Hernandez](https://github.com/samhernandez).
 
 ## Support
-Get in touch with us via the [Shortcodes Support page](https://verbb.io/craft-plugins/shortcodes/support) or by [creating a Github issue](https://github.com/verbb/shortcodes/issues)
+
+Get in touch with us via the [Shortcodes Support page](https://verbb.io/craft-plugins/shortcodes/support) or by [creating a GitHub issue](https://github.com/verbb/shortcodes/issues).
 
 ## Sponsor
-Shortcodes is licensed under the MIT license, meaning it will always be free and open source - we love free stuff! If you'd like to show your support to the plugin regardless, [Sponsor](https://github.com/sponsors/verbb) development.
+
+Shortcodes is licensed under the MIT license, so it will always be free and open source. If you'd like to support it anyway, you can [sponsor its development](https://github.com/sponsors/verbb).
 
 <h2></h2>
 
