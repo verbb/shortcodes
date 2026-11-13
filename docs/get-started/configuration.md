@@ -1,8 +1,8 @@
 # Configuration
 
-You can customise Shortcodes’ settings using a PHP configuration file. The file is optional, but you need a mapping when a shortcode should render one of your Twig templates.
+You can customise Shortcodes’ settings using a PHP configuration file. This is optional: each setting has a default, so you only need to include the values you want to change.
 
-Create `shortcodes.php` in your Craft project's `/config` directory. This example maps a `notice` shortcode to a template:
+To override a setting, create `shortcodes.php` in your Craft project’s `/config` directory and return an array of setting names and values. For example, the following will map a `notice` shortcode to a template:
 
 ```php
 <?php
@@ -14,13 +14,7 @@ return [
 ];
 ```
 
-Create `templates/_shortcodes/notice.twig` with the content you want to display:
-
-```twig
-<p class="notice">Our office is closed on public holidays.</p>
-```
-
-Add `[notice]` to a text field, then apply the `shortcodes` filter when rendering that field. See [Usage](docs:feature-tour/usage) for passing context and handling rich-text paragraphs.
+All other settings keep their defaults. Add any further settings you want to change to the same array. The options below explain the available settings and their defaults.
 
 ## Configuration Options
 

@@ -1,6 +1,12 @@
 # Usage
 
-Start by mapping a shortcode name to its handler template in [Configuration](docs:get-started/configuration). The example there creates a `notice` shortcode and shows its input and rendered result. The filters below apply those mappings to your content.
+Start by mapping a shortcode name to its handler template with the [`map`](docs:get-started/configuration#map) setting. The example on that page maps a `notice` shortcode to `_shortcodes/notice.twig`. To finish it, create `templates/_shortcodes/notice.twig` with the content you want to display:
+
+```twig
+<p class="notice">Our office is closed on public holidays.</p>
+```
+
+Add `[notice]` to a text field, then apply one of the filters below when rendering that field.
 
 ## Twig Filter
 Apply the `shortcodes` Twig filter to a field that might contain shortcodes. The result is an HTML fragment, so render it between element tags rather than inside an HTML attribute, URL, JavaScript or CSS value.
